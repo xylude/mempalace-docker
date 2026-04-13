@@ -156,6 +156,19 @@ Call `mempalace_diary_write` to record what we worked on, decisions made, and op
 ### When Facts Change
 
 Call `mempalace_kg_invalidate` on the old fact before writing the new one with `mempalace_kg_add`.
+Do NOT call `kg_add` to "update" — always invalidate first or conflicting facts will stack.
+
+### mempalace_kg_add Formatting Rules
+
+The KG is strict about input format. Violating these causes silent errors or stacked duplicates:
+
+- **subject/object**: plain text only — no apostrophes, slashes, or special path characters
+  - use `Alice OBrien` not `Alice O'Brien`
+  - use `home/jason/project` not `/home/jason/project` (leading slash breaks it)
+- **predicate**: snake_case — spaces are auto-converted but be consistent
+- **dates**: always `YYYY-MM-DD`, zero-padded — `2026-04-01` not `2026-4-1`
+- **valid_from**: optional but recommended — omitting it means "always true"
+- **duplicate check**: exact match only — conflicting facts won't error, they'll silently stack
 ```
 
 ---
