@@ -1,0 +1,13 @@
+services:
+  mempalace:
+    build: .
+    ports:
+      - "0.0.0.0:${PORT:-8000}:8000"
+    volumes:
+      - mempalace-data:/root/.mempalace
+      - ${IMPORT_PATH:-./imports}:/mnt/imports:ro
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT:-6g}
+
+volumes:
+  mempalace-data:
